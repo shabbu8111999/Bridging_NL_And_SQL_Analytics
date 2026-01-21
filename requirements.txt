@@ -27,3 +27,6 @@ uvicorn
 
 # Testing
 pytest
+
+# Beautiful Logs
+#rich
