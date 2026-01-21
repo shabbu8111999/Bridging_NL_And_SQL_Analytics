@@ -2,6 +2,7 @@
 
 
 ## Execution Flow
+<pre>
 User Question
    ↓
 FastAPI (/query)
@@ -23,7 +24,9 @@ Post Processing
 Natural Language Summary
    ↓
 API Response
+</pre>
 
+---
 
 ## Project Structure
 <pre>
