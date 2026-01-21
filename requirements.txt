@@ -17,7 +17,7 @@ sqlparse
 pandas
 numpy
 
-# Visualization (optional but good)
+# Visualization
 matplotlib
 seaborn
 
