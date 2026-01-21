@@ -1,0 +1,29 @@
+# Core
+python-dotenv
+pydantic
+
+# LLM
+openai
+langchain
+
+# Database
+sqlalchemy
+psycopg2-binary      # PostgreSQL
+
+# SQL safety & parsing
+sqlparse
+
+# Analytics
+pandas
+numpy
+
+# Visualization (optional but good)
+matplotlib
+seaborn
+
+# API / UI
+fastapi
+uvicorn
+
+# Testing
+pytest
