@@ -13,4 +13,5 @@ def execute_query(sql: str):
         result = conn.execute(text(sql))
         rows = result.fetchall()
         columns = result.keys()
+        
         return [dict(zip(columns, row)) for row in rows]
