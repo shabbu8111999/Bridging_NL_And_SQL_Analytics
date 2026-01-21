@@ -13,7 +13,7 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# -------- Request Model --------
+# -------------------- Request Model --------------------
 
 class QueryRequest(BaseModel):
     question: str = Field(
@@ -22,7 +22,7 @@ class QueryRequest(BaseModel):
         description="Natural language analytics question"
     )
 
-# -------- Response Model --------
+# -------------------- Response Model --------------------
 
 class QueryResponse(BaseModel):
     question: str
@@ -32,7 +32,17 @@ class QueryResponse(BaseModel):
     warnings: dict | None = None
     error: str | None = None
 
-# -------- Endpoint --------
+# -------------------- Health Check --------------------
+
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "message": "Query-Bridge API is running",
+        "docs": "/docs"
+    }
+
+# -------------------- Main Endpoint --------------------
 
 @app.post("/query", response_model=QueryResponse)
 def query_analytics(request: QueryRequest):
@@ -40,19 +50,31 @@ def query_analytics(request: QueryRequest):
 
     try:
         result = run_analytics(request.question)
+
         logger.info("Analytics query executed successfully")
-        return result
+
+        # Ensure response always matches QueryResponse
+        return QueryResponse(**result)
 
     except AnalyticsError as e:
         logger.warning(f"Analytics error: {e}")
-        raise HTTPException(status_code=400, detail=str(e))
+
+        return QueryResponse(
+            question=request.question,
+            error=str(e)
+        )
 
     except ValueError as e:
         logger.warning(f"Validation error: {e}")
-        raise HTTPException(status_code=422, detail=str(e))
+
+        raise HTTPException(
+            status_code=422,
+            detail=str(e)
+        )
 
     except Exception as e:
         logger.exception("Unexpected failure in analytics pipeline")
+
         raise HTTPException(
             status_code=500,
             detail="Internal server error"
